@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -16,7 +23,10 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div>
-            <Link to="/dashboard" className="text-2xl font-bold text-gray-900 hover:text-gray-700">
+            <Link
+              to="/dashboard"
+              className="text-2xl font-bold text-gray-900 hover:text-gray-700"
+            >
               Referral CRM
             </Link>
             <p className="text-sm text-gray-500">
@@ -45,8 +55,9 @@ const Header = () => {
 function AppContent() {
   const { loading, isAuthenticated } = useAuth();
   const location = useLocation();
-  
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
+
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
   const isLandingPage = location.pathname === "/";
 
   if (loading) {
@@ -97,7 +108,10 @@ function AppContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Routes>
           <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/register" element={<Navigate to="/dashboard" replace />} />
+          <Route
+            path="/register"
+            element={<Navigate to="/dashboard" replace />}
+          />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route
             path="/dashboard"

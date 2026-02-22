@@ -62,7 +62,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const response = await api.post("/auth/register", { name, email, password });
+    const response = await api.post("/auth/register", {
+      name,
+      email,
+      password,
+    });
     const { user: userData, token: newToken } = response.data.data;
     // Set header immediately before state update
     api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;

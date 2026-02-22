@@ -48,7 +48,7 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.error("Register error:", error);
-    
+
     // Handle validation errors
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((err) => err.message);
@@ -170,7 +170,7 @@ const updateProfile = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { name, email },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     res.json({
