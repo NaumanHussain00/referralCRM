@@ -109,43 +109,119 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <>
+      <div className="min-h-screen bg-gray-50 flex flex-col pb-28">
+        <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Routes>
-          <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-          <Route
-            path="/register"
-            element={<Navigate to="/dashboard" replace />}
-          />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/company/:id"
-            element={
-              <ProtectedRoute>
-                <CompanyDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </main>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+          <Routes>
+            <Route
+              path="/login"
+              element={<Navigate to="/dashboard" replace />}
+            />
+            <Route
+              path="/register"
+              element={<Navigate to="/dashboard" replace />}
+            />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/company/:id"
+              element={
+                <ProtectedRoute>
+                  <CompanyDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </main>
+      </div>
+
+      {/* Footer with social links - Fixed at bottom */}
+      <footer className="bg-gray-50 border-t border-gray-200 fixed bottom-0 left-0 right-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col items-center gap-3">
+            <div className="text-center">
+              <p className="text-sm font-semibold text-gray-900">
+                Built by Nauman Hussain
+              </p>
+              <p className="text-xs text-gray-600">Backend Developer</p>
+              <p className="text-xs text-gray-500">
+                B. Tech. in Computer Science & Engg
+              </p>
+            </div>
+            <div className="flex justify-center items-center gap-6">
+              <a
+                href="https://buymeacoffee.com/naumcoffee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+                title="Buy me a Coffee"
+              >
+                <img
+                  src="/coffee-yellow-button.png"
+                  alt="Buy me a Coffee"
+                  className="h-20 w-25"
+                />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/nauman-hussain-a89297262"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+                title="LinkedIn"
+              >
+                <img
+                  src="/linkedin_logo_icon_170234.png"
+                  alt="LinkedIn"
+                  className="h-20 w-25"
+                />
+              </a>
+              <a
+                href="https://x.com/Noon_Tech_"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+                title="X (Twitter)"
+              >
+                <img
+                  src="/twitter_x_new_logo_square_x_icon_256075.png"
+                  alt="X"
+                  className="h-20 w-25"
+                />
+              </a>
+              <a
+                href="https://github.com/NaumanHussain00"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-80 transition-opacity"
+                title="GitHub"
+              >
+                <img
+                  src="/github-logo_icon-icons.com_73546.png"
+                  alt="GitHub"
+                  className="h-20 w-20"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       <Toaster
         position="top-right"
@@ -167,7 +243,7 @@ function AppContent() {
           },
         }}
       />
-    </div>
+    </>
   );
 }
 
