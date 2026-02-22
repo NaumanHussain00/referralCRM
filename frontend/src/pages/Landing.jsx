@@ -9,7 +9,7 @@ const Landing = () => {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                {/* <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <svg
                     className="w-5 h-5 text-white"
                     fill="none"
@@ -23,7 +23,7 @@ const Landing = () => {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                </div>
+                </div> */}
                 <span className="font-bold text-gray-900">Referral CRM</span>
               </div>
               <div className="flex items-center gap-3">
@@ -547,7 +547,7 @@ const Landing = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-50 border-t border-gray-200 fixed bottom-0 left-0 right-0">
+      <footer className="bg-gray-100 border-t border-gray-200 fixed bottom-0 left-0 right-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col items-center gap-3">
             <div className="text-center">
@@ -560,7 +560,7 @@ const Landing = () => {
               </p>
             </div>
             <div className="flex justify-center items-center gap-6">
-              <a
+              {/* <a
                 href="https://buymeacoffee.com/naumcoffee"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -572,7 +572,18 @@ const Landing = () => {
                   alt="Buy me a Coffee"
                   className="h-20 w-25"
                 />
-              </a>
+              </a> */}
+              <Link
+                to="/support"
+                className="hover:opacity-80 transition-opacity"
+                title="Support This Project"
+              >
+                <img
+                  src="/buy-me-an-attar.png"
+                  alt="Support This Project"
+                  className="h-20 w-30px rounded-2xl"
+                />
+              </Link>
               <a
                 href="https://www.linkedin.com/in/nauman-hussain-a89297262"
                 target="_blank"

@@ -1,14 +1,31 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { companiesApi } from "../api/api";
+import { companiesApi, authApi } from "../api/api";
 import AddCompanyModal from "../components/AddCompanyModal";
+import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 function Dashboard() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleResendVerification = async () => {
+    setResendLoading(true);
+    try {
+      await authApi.resendVerification();
+      toast.success("Verification email sent! Please check your inbox.");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to send verification email",
+      );
+    } finally {
+      setResendLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchCompanies();
@@ -67,6 +84,43 @@ function Dashboard() {
 
   return (
     <div>
+      {/* Email Verification Banner */}
+      {user && !user.isEmailVerified && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <svg
+              className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            <div className="flex-1">
+              <h3 className="text-sm font-medium text-blue-800">
+                Please verify your email address
+              </h3>
+              <p className="text-sm text-blue-700 mt-1">
+                We sent a verification email to <strong>{user.email}</strong>.
+                Please check your inbox and click the verification link.
+              </p>
+              <button
+                onClick={handleResendVerification}
+                disabled={resendLoading}
+                className="mt-2 text-sm font-medium text-blue-800 hover:text-blue-900 underline disabled:opacity-50"
+              >
+                {resendLoading ? "Sending..." : "Resend verification email"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900">
           Target Companies

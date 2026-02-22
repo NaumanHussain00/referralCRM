@@ -9,7 +9,9 @@ const { classifyProfile } = require("../services/profileClassifier");
  */
 exports.getAllCompanies = async (req, res) => {
   try {
-    const companies = await Company.find().sort({ createdAt: -1 });
+    const companies = await Company.find({ userId: req.user._id }).sort({
+      createdAt: -1,
+    });
 
     // Get stats for each company
     const companiesWithStats = await Promise.all(
@@ -53,6 +55,14 @@ exports.getCompanyById = async (req, res) => {
       });
     }
 
+    // Verify ownership
+    if (company.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to access this company",
+      });
+    }
+
     const stats = await Profile.getStatusCounts(company._id);
 
     res.json({
@@ -86,6 +96,7 @@ exports.createCompany = async (req, res) => {
     }
 
     const company = await Company.create({
+      userId: req.user._id,
       companyName,
       role,
       location: location || "",
@@ -115,6 +126,14 @@ exports.deleteCompany = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Company not found",
+      });
+    }
+
+    // Verify ownership
+    if (company.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this company",
       });
     }
 
@@ -148,6 +167,14 @@ exports.fetchProfiles = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Company not found",
+      });
+    }
+
+    // Verify ownership
+    if (company.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to fetch profiles for this company",
       });
     }
 

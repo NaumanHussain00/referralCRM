@@ -4,6 +4,8 @@ A web application to track LinkedIn outreach for job referrals. This app helps y
 
 ## Features
 
+- **User Authentication**: Secure registration, login, and password management
+- **Forgot Password**: Email-based password reset with secure token verification
 - **Add Target Companies**: Track companies you're interested in with role and location
 - **Fetch LinkedIn Profiles**: Use Google X-ray search (via SerpAPI) to find relevant employees
 - **Profile Classification**: Automatically classifies profiles as Recruiter, HR, Engineer, Hiring Manager, or Other
@@ -73,7 +75,59 @@ npm run dev
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
 
+### 5. Email Configuration (for Password Reset)
+
+The application includes forgot password functionality that sends reset emails. To enable this feature:
+
+#### For Development (Using Gmail):
+
+1. Create a Gmail account or use an existing one
+2. Enable 2-Factor Authentication in your Google Account
+3. Generate an App Password:
+   - Go to Google Account Settings → Security
+   - Under "Signing in to Google", select "App Passwords"
+   - Generate a new app password for "Mail"
+4. Add to your `.env` file:
+   ```env
+   EMAIL_SERVICE=gmail
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASSWORD=your_16_character_app_password
+   EMAIL_FROM_NAME=Referral Automation
+   FRONTEND_URL=http://localhost:5173
+   ```
+
+#### For Production:
+
+Use a dedicated email service like SendGrid, AWS SES, or Mailgun:
+
+```env
+EMAIL_HOST=smtp.sendgrid.net
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=apikey
+EMAIL_PASSWORD=your_sendgrid_api_key
+EMAIL_FROM_NAME=Referral Automation
+FRONTEND_URL=https://your-production-url.com
+NODE_ENV=production
+```
+
+**Note**: Without email configuration, the forgot password feature will not work, but all other features remain functional.
+
 ## API Endpoints
+
+### Authentication
+
+| Method | Endpoint                          | Description                  |
+| ------ | --------------------------------- | ---------------------------- |
+| POST   | `/api/auth/register`              | Register new user            |
+| POST   | `/api/auth/login`                 | Login user                   |
+| GET    | `/api/auth/me`                    | Get current user (protected) |
+| PUT    | `/api/auth/profile`               | Update profile (protected)   |
+| PUT    | `/api/auth/password`              | Change password (protected)  |
+| POST   | `/api/auth/forgot-password`       | Request password reset       |
+| POST   | `/api/auth/reset-password/:token` | Reset password with token    |
+| PUT    | `/api/auth/api-key`               | Update SerpAPI key           |
+| DELETE | `/api/auth/api-key`               | Delete SerpAPI key           |
 
 ### Companies
 

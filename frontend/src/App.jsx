@@ -15,6 +15,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import Support from "./pages/Support";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -64,7 +68,12 @@ function AppContent() {
   const location = useLocation();
 
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname.startsWith("/reset-password") ||
+    location.pathname.startsWith("/verify-email") ||
+    location.pathname === "/support";
   const isLandingPage = location.pathname === "/";
 
   if (loading) {
@@ -83,6 +92,10 @@ function AppContent() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
+          <Route path="/support" element={<Support />} />
         </Routes>
         <Toaster
           position="top-right"
@@ -153,7 +166,7 @@ function AppContent() {
       </div>
 
       {/* Footer with social links - Fixed at bottom */}
-      <footer className="bg-gray-50 border-t border-gray-200 fixed bottom-0 left-0 right-0">
+      <footer className="bg-gray-100 border-t border-gray-200 fixed bottom-0 left-0 right-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col items-center gap-3">
             <div className="text-center">
@@ -166,7 +179,7 @@ function AppContent() {
               </p>
             </div>
             <div className="flex justify-center items-center gap-6">
-              <a
+              {/* <a
                 href="https://buymeacoffee.com/naumcoffee"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -178,7 +191,18 @@ function AppContent() {
                   alt="Buy me a Coffee"
                   className="h-20 w-25"
                 />
-              </a>
+              </a> */}
+              <Link
+                to="/support"
+                className="hover:opacity-80 transition-opacity"
+                title="Support This Project"
+              >
+                <img
+                  src="/buy-me-an-attar.png"
+                  alt="Support This Project"
+                  className="h-20 w-30px rounded-2xl"
+                />
+              </Link>
               <a
                 href="https://www.linkedin.com/in/nauman-hussain-a89297262"
                 target="_blank"

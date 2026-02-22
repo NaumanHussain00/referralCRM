@@ -30,6 +30,11 @@ export const authApi = {
   getMe: () => api.get("/auth/me"),
   updateProfile: (data) => api.put("/auth/profile", data),
   changePassword: (data) => api.put("/auth/password", data),
+  forgotPassword: (data) => api.post("/auth/forgot-password", data),
+  resetPassword: (token, data) =>
+    api.post(`/auth/reset-password/${token}`, data),
+  verifyEmail: (token) => api.get(`/auth/verify-email/${token}`),
+  resendVerification: () => api.post("/auth/resend-verification"),
 };
 
 // Companies API
