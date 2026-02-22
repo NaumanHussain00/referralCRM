@@ -42,6 +42,7 @@ const register = async (req, res) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          hasApiKey: false,
         },
         token,
       },
@@ -100,6 +101,9 @@ const login = async (req, res) => {
       });
     }
 
+    // Check if user has API key
+    const userWithKey = await User.findById(user._id).select("+serpApiKey");
+
     // Generate token
     const token = generateToken(user._id);
 
@@ -111,6 +115,7 @@ const login = async (req, res) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          hasApiKey: !!userWithKey.serpApiKey,
         },
         token,
       },
@@ -129,7 +134,7 @@ const login = async (req, res) => {
 // @access  Private
 const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select("+serpApiKey");
 
     res.json({
       success: true,
@@ -138,6 +143,7 @@ const getMe = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        hasApiKey: !!user.serpApiKey,
       },
     });
   } catch (error) {
@@ -173,6 +179,9 @@ const updateProfile = async (req, res) => {
       { new: true, runValidators: true },
     );
 
+    // Get user with API key to check if set
+    const userWithKey = await User.findById(user._id).select("+serpApiKey");
+
     res.json({
       success: true,
       data: {
@@ -180,6 +189,7 @@ const updateProfile = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        hasApiKey: !!userWithKey.serpApiKey,
       },
     });
   } catch (error) {
@@ -237,10 +247,69 @@ const changePassword = async (req, res) => {
   }
 };
 
+// @desc    Update SerpAPI key
+// @route   PUT /api/auth/api-key
+// @access  Private
+const updateApiKey = async (req, res) => {
+  try {
+    const { apiKey } = req.body;
+
+    if (!apiKey) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an API key",
+      });
+    }
+
+    // Basic validation - SerpAPI keys are typically 64 characters
+    if (apiKey.length < 20) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid API key format",
+      });
+    }
+
+    await User.findByIdAndUpdate(req.user.id, { serpApiKey: apiKey });
+
+    res.json({
+      success: true,
+      message: "API key updated successfully",
+    });
+  } catch (error) {
+    console.error("Update API key error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error updating API key",
+    });
+  }
+};
+
+// @desc    Delete SerpAPI key
+// @route   DELETE /api/auth/api-key
+// @access  Private
+const deleteApiKey = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.user.id, { $unset: { serpApiKey: 1 } });
+
+    res.json({
+      success: true,
+      message: "API key removed successfully",
+    });
+  } catch (error) {
+    console.error("Delete API key error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error removing API key",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getMe,
   updateProfile,
   changePassword,
+  updateApiKey,
+  deleteApiKey,
 };

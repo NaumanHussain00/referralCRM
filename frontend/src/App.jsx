@@ -14,6 +14,7 @@ import CompanyDetail from "./pages/CompanyDetail";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
+import Settings from "./pages/Settings";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -38,6 +39,12 @@ const Header = () => {
               <span className="text-sm text-gray-600">
                 Welcome, <span className="font-medium">{user?.name}</span>
               </span>
+              <Link
+                to="/settings"
+                className="text-sm px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                Settings
+              </Link>
               <button
                 onClick={logout}
                 className="text-sm px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
@@ -126,6 +133,14 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <CompanyDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

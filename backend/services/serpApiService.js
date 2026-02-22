@@ -37,8 +37,23 @@ const parseResult = (result) => {
 /**
  * Fetches LinkedIn profiles using Google X-ray search via SerpAPI
  * Uses pagination to fetch up to 100 results (10 pages of 10)
+ * @param {string} companyName - The company name to search for
+ * @param {string} role - The role/title to search for
+ * @param {string} location - Optional location filter
+ * @param {string} apiKey - User's SerpAPI key
  */
-const fetchLinkedInProfiles = async (companyName, role, location = "") => {
+const fetchLinkedInProfiles = async (
+  companyName,
+  role,
+  location = "",
+  apiKey,
+) => {
+  if (!apiKey) {
+    throw new Error(
+      "SerpAPI key is required. Please add your API key in Settings.",
+    );
+  }
+
   // Build the Google X-ray search query
   let query = `site:linkedin.com/in "${companyName}" "${role}"`;
   if (location) {
@@ -61,7 +76,7 @@ const fetchLinkedInProfiles = async (companyName, role, location = "") => {
       const params = {
         engine: "google",
         q: query,
-        api_key: process.env.SERPAPI_KEY,
+        api_key: apiKey,
         num: resultsPerPage,
         start: page * resultsPerPage, // Pagination offset
         gl: "us",

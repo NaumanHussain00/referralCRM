@@ -11,5 +11,7 @@ router.post("/login", authController.login);
 router.get("/me", protect, authController.getMe);
 router.put("/profile", protect, authController.updateProfile);
 router.put("/password", protect, authController.changePassword);
+router.put("/api-key", protect, authController.updateApiKey);
+router.delete("/api-key", protect, authController.deleteApiKey);
 
 module.exports = router;

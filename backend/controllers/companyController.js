@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const Profile = require("../models/Profile");
+const User = require("../models/User");
 const { fetchLinkedInProfiles } = require("../services/serpApiService");
 const { classifyProfile } = require("../services/profileClassifier");
 
@@ -150,11 +151,22 @@ exports.fetchProfiles = async (req, res) => {
       });
     }
 
-    // Fetch profiles from SerpAPI
+    // Get user's API key
+    const user = await User.findById(req.user.id).select("+serpApiKey");
+    if (!user.serpApiKey) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please add your SerpAPI key in Settings before fetching profiles",
+      });
+    }
+
+    // Fetch profiles from SerpAPI using user's key
     const profiles = await fetchLinkedInProfiles(
       company.companyName,
       company.role,
       company.location,
+      user.serpApiKey,
     );
 
     let newProfiles = 0;

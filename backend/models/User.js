@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    serpApiKey: {
+      type: String,
+      select: false, // Don't include in queries by default
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -55,6 +59,11 @@ userSchema.pre("save", async function (next) {
 // Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Check if user has API key set
+userSchema.methods.hasApiKey = function () {
+  return !!this.serpApiKey;
 };
 
 module.exports = mongoose.model("User", userSchema);
