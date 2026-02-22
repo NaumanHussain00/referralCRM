@@ -4,9 +4,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 // Import routes
+const authRoutes = require("./routes/authRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+
+// Import auth middleware
+const { protect } = require("./middleware/auth");
 
 const app = express();
 
@@ -21,9 +25,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/api/companies", companyRoutes);
-app.use("/api/profiles", profileRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/companies", protect, companyRoutes);
+app.use("/api/profiles", protect, profileRoutes);
+app.use("/api/messages", protect, messageRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

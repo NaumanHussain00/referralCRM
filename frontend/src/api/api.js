@@ -7,6 +7,31 @@ const api = axios.create({
   },
 });
 
+// Add interceptor to handle auth errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear token on 401 errors
+      localStorage.removeItem("token");
+      // Redirect to login if not already there
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Auth API
+export const authApi = {
+  login: (data) => api.post("/auth/login", data),
+  register: (data) => api.post("/auth/register", data),
+  getMe: () => api.get("/auth/me"),
+  updateProfile: (data) => api.put("/auth/profile", data),
+  changePassword: (data) => api.put("/auth/password", data),
+};
+
 // Companies API
 export const companiesApi = {
   getAll: () => api.get("/companies"),

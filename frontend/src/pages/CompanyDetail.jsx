@@ -30,7 +30,7 @@ function CompanyDetail() {
     } catch (error) {
       toast.error("Failed to fetch company");
       console.error(error);
-      navigate("/");
+      navigate("/dashboard");
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ function CompanyDetail() {
     <div>
       {/* Back button */}
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/dashboard")}
         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
       >
         <svg
