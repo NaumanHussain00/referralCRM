@@ -188,6 +188,17 @@ exports.fetchProfiles = async (req, res) => {
       });
     }
 
+    // Check search limit for unverified users
+    const MAX_UNVERIFIED_SEARCHES = 3;
+    if (!user.isEmailVerified && user.searchCount >= MAX_UNVERIFIED_SEARCHES) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "You've reached the search limit for unverified accounts. Please verify your email for unlimited searches.",
+        searchLimitReached: true,
+      });
+    }
+
     // Fetch profiles from SerpAPI using user's key
     const profiles = await fetchLinkedInProfiles(
       company.companyName,
@@ -222,6 +233,12 @@ exports.fetchProfiles = async (req, res) => {
       }
     }
 
+    // Increment search count for unverified users
+    if (!user.isEmailVerified) {
+      user.searchCount += 1;
+      await user.save();
+    }
+
     res.json({
       success: true,
       message: `Fetched ${profiles.length} profiles. Added ${newProfiles} new, ${duplicates} duplicates skipped.`,
@@ -229,6 +246,8 @@ exports.fetchProfiles = async (req, res) => {
         fetched: profiles.length,
         new: newProfiles,
         duplicates,
+        searchCount: user.searchCount,
+        isEmailVerified: user.isEmailVerified,
       },
     });
   } catch (error) {

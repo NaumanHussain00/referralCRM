@@ -60,4 +60,9 @@ export const messagesApi = {
   generate: (data) => api.post("/messages/generate", data),
 };
 
+// Guest API (no authentication required)
+export const guestApi = {
+  searchProfiles: (data) => api.post("/guest/search", data),
+};
+
 export default api;

@@ -68,6 +68,7 @@ const register = async (req, res) => {
           role: user.role,
           hasApiKey: false,
           isEmailVerified: user.isEmailVerified,
+          searchCount: user.searchCount || 0,
         },
         token,
       },
@@ -142,6 +143,7 @@ const login = async (req, res) => {
           role: user.role,
           hasApiKey: !!userWithKey.serpApiKey,
           isEmailVerified: user.isEmailVerified,
+          searchCount: user.searchCount || 0,
         },
         token,
       },
@@ -171,6 +173,7 @@ const getMe = async (req, res) => {
         role: user.role,
         hasApiKey: !!user.serpApiKey,
         isEmailVerified: user.isEmailVerified,
+        searchCount: user.searchCount || 0,
       },
     });
   } catch (error) {

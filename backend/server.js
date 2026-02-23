@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const companyRoutes = require("./routes/companyRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const guestRoutes = require("./routes/guestRoutes");
 
 // Import auth middleware
 const { protect } = require("./middleware/auth");
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/guest", guestRoutes); // Guest routes (no authentication required)
 app.use("/api/companies", protect, companyRoutes);
 app.use("/api/profiles", protect, profileRoutes);
 app.use("/api/messages", protect, messageRoutes);

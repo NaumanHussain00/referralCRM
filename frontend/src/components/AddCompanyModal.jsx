@@ -76,7 +76,7 @@ function AddCompanyModal({ isOpen, onClose, onSubmit }) {
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                placeholder="e.g., Software Engineer"
+                placeholder="e.g., Software Engineer, SDE, Talent Acquisition"
                 className="input"
                 required
               />

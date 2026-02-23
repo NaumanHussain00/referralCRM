@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { companiesApi, authApi } from "../api/api";
 import AddCompanyModal from "../components/AddCompanyModal";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+
+const MAX_UNVERIFIED_SEARCHES = 3;
 
 function Dashboard() {
   const [companies, setCompanies] = useState([]);
@@ -86,10 +88,12 @@ function Dashboard() {
     <div>
       {/* Email Verification Banner */}
       {user && !user.isEmailVerified && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div
+          className={`rounded-lg p-4 mb-6 ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "bg-red-50 border border-red-200" : "bg-blue-50 border border-blue-200"}`}
+        >
           <div className="flex items-start gap-3">
             <svg
-              className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+              className={`w-5 h-5 mt-0.5 flex-shrink-0 ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "text-red-600" : "text-blue-600"}`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -102,17 +106,33 @@ function Dashboard() {
               />
             </svg>
             <div className="flex-1">
-              <h3 className="text-sm font-medium text-blue-800">
-                Please verify your email address
-              </h3>
-              <p className="text-sm text-blue-700 mt-1">
+              <div className="flex items-center justify-between">
+                <h3
+                  className={`text-sm font-medium ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "text-red-800" : "text-blue-800"}`}
+                >
+                  {(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES
+                    ? "Search limit reached - Please verify your email"
+                    : "Please verify your email address"}
+                </h3>
+                <span
+                  className={`text-sm font-semibold px-2 py-0.5 rounded ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}
+                >
+                  {user.searchCount || 0} / {MAX_UNVERIFIED_SEARCHES} searches
+                  used
+                </span>
+              </div>
+              <p
+                className={`text-sm mt-1 ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "text-red-700" : "text-blue-700"}`}
+              >
                 We sent a verification email to <strong>{user.email}</strong>.
-                Please check your inbox and click the verification link.
+                {(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES
+                  ? " Verify to unlock unlimited searches."
+                  : ` You have ${MAX_UNVERIFIED_SEARCHES - (user.searchCount || 0)} search${MAX_UNVERIFIED_SEARCHES - (user.searchCount || 0) !== 1 ? "es" : ""} remaining without email verification.`}
               </p>
               <button
                 onClick={handleResendVerification}
                 disabled={resendLoading}
-                className="mt-2 text-sm font-medium text-blue-800 hover:text-blue-900 underline disabled:opacity-50"
+                className={`mt-2 text-sm font-medium underline disabled:opacity-50 ${(user.searchCount || 0) >= MAX_UNVERIFIED_SEARCHES ? "text-red-800 hover:text-red-900" : "text-blue-800 hover:text-blue-900"}`}
               >
                 {resendLoading ? "Sending..." : "Resend verification email"}
               </button>

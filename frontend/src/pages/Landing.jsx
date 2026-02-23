@@ -65,7 +65,7 @@ const Landing = () => {
               LinkedIn profiles instantly. No premium subscription needed.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
               <Link
                 to="/register"
                 className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
@@ -91,6 +91,32 @@ const Landing = () => {
               >
                 See How It Works
               </a>
+            </div>
+
+            {/* Guest Mode Entry */}
+            <div className="flex justify-center mb-12">
+              <Link
+                to="/guest"
+                className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors group"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                <span className="font-medium">Try without signing up</span>
+                <span className="text-sm text-gray-400 group-hover:text-blue-400">
+                  (Guest Mode)
+                </span>
+              </Link>
             </div>
 
             {/* Preview Image Placeholder */}
@@ -550,7 +576,7 @@ const Landing = () => {
       <footer className="bg-gray-100 border-t border-gray-200 fixed bottom-0 left-0 right-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col items-center gap-3">
-            <div className="text-center">
+            {/* <div className="text-center">
               <p className="text-sm font-semibold text-gray-900">
                 Built by Nauman Hussain
               </p>
@@ -558,7 +584,7 @@ const Landing = () => {
               <p className="text-xs text-gray-500">
                 B. Tech. in Computer Science & Engg
               </p>
-            </div>
+            </div> */}
             <div className="flex justify-center items-center gap-6">
               {/* <a
                 href="https://buymeacoffee.com/naumcoffee"
@@ -573,6 +599,16 @@ const Landing = () => {
                   className="h-20 w-25"
                 />
               </a> */}
+              <div className="text-center">
+              <p className="text-sm font-semibold text-gray-900">
+                Support this Project Built by Nauman Hussain
+              </p>
+              <p className="text-xs text-gray-600">Backend Developer</p>
+              <p className="text-xs text-gray-500">
+                B. Tech. in Computer Science & Engg
+              </p>
+            </div>
+
               <Link
                 to="/support"
                 className="hover:opacity-80 transition-opacity"
