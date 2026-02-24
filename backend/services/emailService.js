@@ -103,7 +103,7 @@ const sendPasswordResetEmail = async (userEmail, resetToken) => {
     console.log("Password reset email sent:", info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error("Error sending password reset email:", error);
+    console.error("FULL EMAIL ERROR:", error);
     throw new Error("Failed to send password reset email");
   }
 };
@@ -170,7 +170,7 @@ const sendVerificationEmail = async (userEmail, verificationToken) => {
     console.log("Verification email sent:", info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error("Error sending verification email:", error);
+    console.error("FULL VERIFICATION EMAIL ERROR:", error);
     throw new Error("Failed to send verification email");
   }
 };
